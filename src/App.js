@@ -1,14 +1,9 @@
-import { Nav, Navbar, NavDropdown, Container, Form, Button } from 'react-bootstrap';
-import Select from 'react-select'
+import React from 'react';
+import { Nav, Navbar, NavDropdown, Container, Form, Button} from 'react-bootstrap';
+// import Paginator from './Components/Pagination';
+import SelectMenu from './Components/SelectExample';
 
 function App() {
-
-  const options = [
-    { value: 'chocolate', label: 'Chocolate' },
-    { value: 'strawberry', label: 'Strawberry' },
-    { value: 'vanilla', label: 'Vanilla' }
-  ]
-
   return (
     <div className="App">
       <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
@@ -16,7 +11,7 @@ function App() {
             <Navbar.Brand href="#home">Dashboard</Navbar.Brand>
             <Navbar.Toggle aria-controls="responsive-navbar-nav"/>
             <Navbar.Collapse id="responsive-navbar-nav">
-              <Nav className="me-auto" pullRight>
+              <Nav className="me-auto">
                 <Nav.Link href="#home">Home</Nav.Link>
                 <Nav.Link href="#link">Link</Nav.Link>
                 <NavDropdown title="Dropdown" id="basic-nav-dropdown">
@@ -36,8 +31,11 @@ function App() {
             </Navbar.Collapse>
           </Container>
         </Navbar>
-        <Select isClearable options={options} />
-    </div>
+        <hr/>
+        <Container>
+          <SelectMenu /> 
+        </Container>
+      </div>
   );
 }
 
