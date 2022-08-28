@@ -5,10 +5,12 @@ import {Container, Table} from 'react-bootstrap';
 const SelectMenu = () => {
   const [client, setClient] = useState(null);
   const [selectedOption, setSelectedOption] = useState (null);
+  // const [selectList, setSelectList] = useState([]);
+  // const [isLoading, setIsLoading] = useState(false);
   
   useEffect(() => {
     const fetchData = async () => {
-      const data = await fetch('https://api-generator.retool.com/mQnDmU/data');
+      const data = await fetch(`https://api-generator.retool.com/UkTXWT/data`);
       const json = await data.json();
       
       setClient(json);
@@ -18,25 +20,18 @@ const SelectMenu = () => {
     .catch(console.err);
     
   },[]);
-
-  
-  useEffect(() => {
-    
-  },[])
   
   if(!client){
     return <>loading...</>
   }
   
-  const selectList = client.map(item => {
-    return {value: item.name, label:item.name}
+  const selectList = client.map((item) => {
+    return {id: item.id}
   });
-  console.log(selectList); //En teoria esto deberia desplegarme los objetos JSON o no?
   
   const handleClientName = (e) => {
     //Client option selected is coption
-    const coption = e.target;
-    console.log((selectedOption[coption.value]));
+    // console.log((e) => (selectedOption[e.target.value]));
     setSelectedOption(selectedOption);
   }
   
@@ -67,13 +62,16 @@ const SelectMenu = () => {
             </thead>
             <tbody>
               {client.map(item => {
+                  console.log(selectList);
                   //validacion debe ir aqui y manejar los datos de abajo
-                  return(
-                    <tr key={item.id}>
-                      <td>{item.id}</td>
-                      <td>{item.name}</td>
-                    </tr>
-                  )
+                  // if(item.id===selectList){
+                    return(
+                      <tr key={item.id}>
+                        <td>{item.id}</td>
+                        <td>{item.name}</td>
+                      </tr>
+                    )
+                  // }
               })}
             </tbody>
           </Table>
