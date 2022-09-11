@@ -3,36 +3,50 @@ import Select from 'react-select';
 import {Container, Table} from 'react-bootstrap';
 
 const SelectMenu = () => {
-  const [client, setClient] = useState(null);
+  const [clients, setClients] = useState(undefined);
+  const [filteredClients, setFilteredClients] = useState(null);
   const [selectedOption, setSelectedOption] = useState (null);
-  // const [selectList, setSelectList] = useState([]);
-  // const [isLoading, setIsLoading] = useState(false);
+  const [selectList, setSelectList] = useState([]);
   
   useEffect(() => {
     const fetchData = async () => {
       const data = await fetch(`https://api-generator.retool.com/UkTXWT/data`);
       const json = await data.json();
       
-      setClient(json);
+      setClients(json);
+      setFilteredClients(json);
+  
+      setSelectListClients(json);
     }
-    
     fetchData()
     .catch(console.err);
-    
   },[]);
   
-  if(!client){
-    return <>loading...</>
+  useEffect(() => {
+    const setFilteredClientsByName = (option) => {
+      let selectFilteredClients = [];
+      if(clients)
+        selectFilteredClients = [...clients];
+  
+      if(option)
+        selectFilteredClients = [...clients?.filter(({name}) => name === option?.label)];
+  
+      setFilteredClients([...selectFilteredClients]);
+    }
+    setFilteredClientsByName(selectedOption);
+  },[selectedOption, clients]);
+
+  const setSelectListClients = (json) => {
+    const selectListClients = json.map(({id, name}) => ({value: id, label: name}));
+    setSelectList(selectListClients);
   }
-  
-  const selectList = client.map((item) => {
-    return {id: item.id}
-  });
-  
-  const handleClientName = (e) => {
-    //Client option selected is coption
-    // console.log((e) => (selectedOption[e.target.value]));
-    setSelectedOption(selectedOption);
+
+  const handleClientName = (option) => {
+    setSelectedOption(option);
+  }
+
+  if(!clients){
+    return <>loading...</>
   }
   
   return (
@@ -44,7 +58,8 @@ const SelectMenu = () => {
       <div className='col-sm-3'>
         <Select 
           isClearable
-          onChange={(e) => handleClientName(e.target.value)} 
+          value={selectedOption}
+          onChange={handleClientName} 
           options={selectList} 
           />
       </div>
@@ -61,17 +76,13 @@ const SelectMenu = () => {
               </tr>
             </thead>
             <tbody>
-              {client.map(item => {
-                  console.log(selectList);
-                  //validacion debe ir aqui y manejar los datos de abajo
-                  // if(item.id===selectList){
-                    return(
-                      <tr key={item.id}>
-                        <td>{item.id}</td>
-                        <td>{item.name}</td>
-                      </tr>
-                    )
-                  // }
+              {filteredClients.map(item => {
+                  return(
+                        <tr key={item.id}>
+                          <td>{item.id}</td>
+                          <td>{item.name}</td>
+                        </tr>
+                      )
               })}
             </tbody>
           </Table>

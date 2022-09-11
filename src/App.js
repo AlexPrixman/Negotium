@@ -1,6 +1,5 @@
 import React from 'react';
 import { Nav, Navbar, NavDropdown, Container, Form, Button} from 'react-bootstrap';
-// import Paginator from './Components/Pagination';
 import SelectMenu from './Components/SelectExample';
 
 function App() {
